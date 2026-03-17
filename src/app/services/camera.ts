@@ -23,6 +23,7 @@ export class CameraService {
         allowEditing: false,
         resultType: CameraResultType.Base64,
         source: CameraSource.Prompt,
+        saveToGallery: true,
       });
 
       const base64Data = photo.base64String ?? '';
