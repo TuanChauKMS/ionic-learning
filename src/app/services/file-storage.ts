@@ -35,7 +35,7 @@ export class FileStorageService {
       Filesystem.writeFile({
         path,
         data: base64Data,
-        directory: Directory.Data,
+        directory: Directory.Documents,
         recursive: true
       })
     ).pipe(
@@ -59,7 +59,7 @@ export class FileStorageService {
     this.logger.log(`FileStorageService: reading file at ${path}`);
     const result = await Filesystem.readFile({
       path,
-      directory: Directory.Data,
+      directory: Directory.Documents,
     });
     return result.data as string;
   }
@@ -68,7 +68,7 @@ export class FileStorageService {
     return from(
       Filesystem.deleteFile({
         path,
-        directory: Directory.Data,
+        directory: Directory.Documents,
       })
     ).pipe(
       tap(() => {
