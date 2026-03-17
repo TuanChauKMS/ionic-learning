@@ -1,11 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 import { BehaviorSubject, Observable, from, map, tap } from 'rxjs';
 import { StoredFile, enrichStoredFile } from '../models/file.model';
 import { Logger } from './logger';
 
 const FILES_DIR = 'stored-files';
-const INDEX_FILE = 'stored-files/index.json';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +14,7 @@ export class FileStorageService {
   private readonly filesSubject = new BehaviorSubject<StoredFile[]>([]);
 
   constructor() {
-    this.loadIndex();
+    this.logger.log('FileStorageService: initialized with empty list');
   }
 
   public getFiles(): Observable<StoredFile[]> {
@@ -37,6 +36,7 @@ export class FileStorageService {
         path,
         data: base64Data,
         directory: Directory.Data,
+        recursive: true
       })
     ).pipe(
       map(() => enrichStoredFile({
@@ -50,7 +50,6 @@ export class FileStorageService {
       tap((storedFile) => {
         const files = [...this.filesSubject.value, storedFile];
         this.filesSubject.next(files);
-        this.persistIndex(files);
         this.logger.log(`FileStorageService: saved file "${name}" (${size} bytes)`);
       })
     );
@@ -75,41 +74,9 @@ export class FileStorageService {
       tap(() => {
         const files = this.filesSubject.value.filter((f) => f.path !== path);
         this.filesSubject.next(files);
-        this.persistIndex(files);
         this.logger.log(`FileStorageService: deleted file at ${path}`);
       })
     );
   }
 
-  private async loadIndex(): Promise<void> {
-    try {
-      const result = await Filesystem.readFile({
-        path: INDEX_FILE,
-        directory: Directory.Data,
-        encoding: Encoding.UTF8,
-      });
-      const files: StoredFile[] = JSON.parse(result.data as string).map(
-        (f: StoredFile) => enrichStoredFile({ ...f, savedAt: new Date(f.savedAt) })
-      );
-      this.filesSubject.next(files);
-      this.logger.log(`FileStorageService: loaded ${files.length} files from index`);
-    } catch {
-      this.logger.log('FileStorageService: no existing index found, starting fresh');
-      this.filesSubject.next([]);
-    }
-  }
-
-  private async persistIndex(files: StoredFile[]): Promise<void> {
-    try {
-      await Filesystem.writeFile({
-        path: INDEX_FILE,
-        data: JSON.stringify(files),
-        directory: Directory.Data,
-        encoding: Encoding.UTF8,
-      });
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      this.logger.error(`FileStorageService: failed to persist index - ${message}`);
-    }
-  }
 }

@@ -29,5 +29,23 @@
         <img [src]="photo.dataUrl" alt="Captured photo" />
       </ion-card-content>
     </ion-card>
+
+    <ion-button expand="block" (click)="savePhoto()" [disabled]="saved || saving" color="success">
+      @if (saving) {
+        <ion-spinner name="crescent" />
+      } @else if (saved) {
+        <ion-icon name="checkmark-circle-outline" slot="start" />
+        Saved
+      } @else {
+        <ion-icon name="save-outline" slot="start" />
+        Save to Files
+      }
+    </ion-button>
+
+    @if (saved) {
+      <ion-note color="success" class="ion-padding">
+        Photo saved! View it in the Files tab.
+      </ion-note>
+    }
   }
 </ion-content>
