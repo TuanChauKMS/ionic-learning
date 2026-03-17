@@ -1,36 +1,84 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import {
+  ROUTE_PATH_TASKS,
+  ROUTE_PATH_TASKS_NEW,
+  ROUTE_PATH_DASHBOARD,
+
+  ROUTE_PATH_API_DEMO,
+  ROUTE_PATH_CAMERA,
+  ROUTE_PATH_FILES,
+} from '../app.routes.constants';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
-      },
-      {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
-      },
-      {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
-      },
-      {
         path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('../pages/home/home.module').then((m) => m.HomePageModule),
+      },
+      {
+        path: ROUTE_PATH_DASHBOARD,
+        loadChildren: () =>
+          import('../pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardPageModule
+          ),
+      },
+      {
+        path: ROUTE_PATH_TASKS,
+        loadChildren: () =>
+          import('../pages/task-list/task-list.module').then(
+            (m) => m.TaskListPageModule
+          ),
+      },
+      {
+        path: ROUTE_PATH_TASKS_NEW,
+        loadChildren: () =>
+          import('../pages/task-form/task-form.module').then(
+            (m) => m.TaskFormPageModule
+          ),
+      },
+      {
+        path: `${ROUTE_PATH_TASKS}/:id`,
+        loadChildren: () =>
+          import('../pages/task-detail/task-detail.module').then(
+            (m) => m.TaskDetailPageModule
+          ),
+      },
+
+      {
+        path: ROUTE_PATH_API_DEMO,
+        loadChildren: () =>
+          import('../pages/api-demo/api-demo.module').then(
+            (m) => m.ApiDemoPageModule
+          ),
+      },
+      {
+        path: ROUTE_PATH_CAMERA,
+        loadChildren: () =>
+          import('../pages/camera/camera.module').then(
+            (m) => m.CameraPageModule
+          ),
+      },
+      {
+        path: ROUTE_PATH_FILES,
+        loadChildren: () =>
+          import('../pages/files/files.module').then(
+            (m) => m.FilesPageModule
+          ),
+      },
+      {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+    ],
   },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

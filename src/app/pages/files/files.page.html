@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Files</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <p>Pick files from your device to store them in the app.</p>
+
+  <ion-button expand="block" (click)="pickFile()" [disabled]="loading">
+    @if (loading) {
+      <ion-spinner name="crescent" />
+    } @else {
+      <ion-icon name="cloud-upload-outline" slot="start" />
+      Pick File
+    }
+  </ion-button>
+
+  @if (error) {
+    <ion-note color="danger" class="ion-padding">Error: {{ error }}</ion-note>
+  }
+
+  @if (previewDataUrl) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ previewFileName }}</ion-card-title>
+        <ion-button fill="clear" size="small" (click)="closePreview()">
+          <ion-icon name="close-outline" slot="icon-only" />
+        </ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        <img [src]="previewDataUrl" [alt]="previewFileName" class="preview-image" />
+      </ion-card-content>
+    </ion-card>
+  }
+
+  @if (files$ | async; as files) {
+    @if (files.length === 0) {
+      <ion-card>
+        <ion-card-content>
+          <p class="ion-text-center">No files stored yet. Pick a file to get started.</p>
+        </ion-card-content>
+      </ion-card>
+    } @else {
+      <ion-list>
+        @for (file of files; track file.path) {
+          <ion-item-sliding>
+            <ion-item [button]="file.category === 'image'" (click)="onPreviewFile(file)">
+              <ion-icon [name]="file.iconName" slot="start" />
+              <ion-label>
+                <h2>{{ file.name }}</h2>
+                <p>{{ file.displaySize }} &middot; {{ file.savedAt | date:'short' }}</p>
+              </ion-label>
+              @if (file.category === 'image') {
+                <ion-icon name="eye-outline" slot="end" color="medium" />
+              }
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option color="danger" (click)="onDeleteFile(file)">
+                <ion-icon name="trash-outline" slot="icon-only" />
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        }
+      </ion-list>
+    }
+  }
+</ion-content>

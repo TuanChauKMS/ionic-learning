@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx ng:*)",
+      "Bash(curl -s http://localhost:4200)",
+      "Bash(curl -s http://localhost:4200/styles.css)",
+      "Bash(node -e \"console.log\\(require.resolve\\(''playwright''\\)\\)\")",
+      "Bash(npm root:*)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}

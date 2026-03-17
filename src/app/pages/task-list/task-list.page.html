@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Task List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="ROUTE_URL_TASKS_NEW">
+        <ion-icon name="add-outline"></ion-icon>
+        New Task
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedFilter" (ionChange)="onSegmentChange($event)">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="active">
+        <ion-label>Active</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="completed">
+        <ion-label>Completed</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  @if (tasks$ | async; as tasks) {
+    @if (tasks.length > 0) {
+      <ion-list>
+        @for (task of tasks; track task.id) {
+          <ion-item>
+            <ion-checkbox
+              slot="start"
+              [checked]="task.completed"
+              (ionChange)="onToggleComplete(task.id)"
+            />
+            <ion-label (click)="navigateToTask(task.id)">
+              <h2 [class.completed]="task.completed">{{ task.title }}</h2>
+              <p>{{ task.description }}</p>
+              <p>
+                <ion-badge [class]="getPriorityClass(task.priority)">{{
+                  task.priority
+                }}</ion-badge>
+                {{ task.createdAt | date : 'short' }}
+                @if (task.dueDate) {
+                  | Due: {{ task.dueDate | date : 'short' }}
+                }
+              </p>
+            </ion-label>
+            <ion-button fill="clear" (click)="onDeleteTask(task.id, task.title)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+    } @else {
+      <ion-card>
+        <ion-card-content>
+          <p class="ion-text-center">No tasks found. Create your first task!</p>
+          <ion-button expand="block" [routerLink]="ROUTE_URL_TASKS_NEW">
+            Create Task
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    }
+  } @else {
+    <ion-item lines="none">
+      <ion-label>Loading tasks...</ion-label>
+    </ion-item>
+  }
+</ion-content>

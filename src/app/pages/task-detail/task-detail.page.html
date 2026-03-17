@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Task Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  @if (task$ | async; as task) {
+    <ion-breadcrumbs>
+      <ion-breadcrumb [routerLink]="['/tasks']">Tasks</ion-breadcrumb>
+      <ion-breadcrumb>{{ task.title }}</ion-breadcrumb>
+    </ion-breadcrumbs>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title [class.completed]="task.completed">{{
+          task.title
+        }}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-badge [class]="priorityClassMap[task.priority]">{{
+            task.priority
+          }}</ion-badge>
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-checkbox
+            [checked]="task.completed"
+            (ionChange)="onToggleComplete()"
+          />
+          <ion-label>
+            {{ task.completed ? 'Completed' : 'Mark as Complete' }}
+          </ion-label>
+        </ion-item>
+        <h2>Description</h2>
+        <p>{{ task.description }}</p>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Task ID</ion-label>
+            <ion-note slot="end">{{ task.id }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Status</ion-label>
+            <ion-note slot="end">{{
+              task.completed ? 'Completed' : 'Active'
+            }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Priority</ion-label>
+            <ion-note slot="end">{{ task.priority }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Created</ion-label>
+            <ion-note slot="end">{{ task.createdAt | date : 'full' }}</ion-note>
+          </ion-item>
+          @if (task.dueDate) {
+            <ion-item>
+              <ion-label>Due Date</ion-label>
+              <ion-note slot="end">{{ task.dueDate | date : 'full' }}</ion-note>
+            </ion-item>
+          }
+        </ion-list>
+        <ion-button expand="block" fill="outline" (click)="onBack()">
+          Back to List
+        </ion-button>
+        <ion-button expand="block" color="danger" (click)="onDelete(task.title)">
+          Delete Task
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Task Not Found</ion-card-title>
+        <ion-card-subtitle
+          >The task you're looking for doesn't exist or has been
+          deleted.</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" [routerLink]="['/tasks']">
+          Back to Task List
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

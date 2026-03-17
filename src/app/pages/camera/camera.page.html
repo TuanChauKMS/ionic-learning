@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Camera</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <p>Use the device camera to take a photo. The captured image will be displayed below.</p>
+
+  <ion-button expand="block" (click)="takePhoto()" [disabled]="loading">
+    @if (loading) {
+      <ion-spinner name="crescent" />
+    } @else {
+      <ion-icon name="camera-outline" slot="start" />
+      Take Photo
+    }
+  </ion-button>
+
+  @if (error) {
+    <ion-note color="danger" class="ion-padding">Error: {{ error }}</ion-note>
+  }
+
+  @if (photo) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Captured Photo</ion-card-title>
+        <ion-card-subtitle>Format: {{ photo.format }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <img [src]="photo.dataUrl" alt="Captured photo" />
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

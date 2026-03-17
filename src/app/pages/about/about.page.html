@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>About</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>About {{ appName }}</ion-card-title>
+      <ion-card-subtitle>Version {{ version }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>A comprehensive learning application for mastering Angular and Ionic.</p>
+    </ion-card-content>
+  </ion-card>
+  <h2>Core Concepts Demonstrated</h2>
+  <ion-list lines="none">
+    @for (concept of concepts; track concept.title) {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ concept.icon }} {{ concept.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ concept.description }}</p>
+        </ion-card-content>
+      </ion-card>
+    }
+  </ion-list>
+  <h2>Features Implemented</h2>
+  <ion-list>
+    @for (feature of features; track feature) {
+      <ion-item>
+        <ion-label>{{ feature }}</ion-label>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>

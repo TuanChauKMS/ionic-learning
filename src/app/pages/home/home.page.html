@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Angular Learning App</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class="hero-section">
+    <h1>Ionic Learning App</h1>
+  </div>
+  @if (taskStats$ | async; as stats) {
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Total</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="stat-number">{{ stats.total }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="4">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Active</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="stat-number">{{ stats.active }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="4">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Completed</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="stat-number">{{ stats.completed }}</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  }
+  <ion-button expand="block" [routerLink]="ROUTE_URL_TASKS"
+    >View Tasks</ion-button
+  >
+  <ion-button expand="block" fill="outline" [routerLink]="ROUTE_URL_TASKS_NEW"
+    >Create New Task</ion-button
+  >
+</ion-content>

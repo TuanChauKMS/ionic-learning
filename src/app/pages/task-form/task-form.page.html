@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tasks"></ion-back-button>
+    </ion-buttons>
+    <ion-title>New Task</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="stacked" for="title">Task Title *</ion-label>
+      <ion-input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Enter task title (min 3 characters)"
+      />
+    </ion-item>
+    @if (titleControl.invalid && (titleControl.touched || submitted)) {
+      <ion-note color="danger" class="ion-padding-start">
+        @if (titleControl.errors?.['required']) {
+          Title is required
+        }
+        @if (titleControl.errors?.['minlength']) {
+          Title must be at least 3 characters
+        }
+      </ion-note>
+    }
+    <ion-item>
+      <ion-label position="stacked" for="description">Description *</ion-label>
+      <ion-textarea
+        id="description"
+        formControlName="description"
+        placeholder="Enter task description (min 10 characters)"
+        rows="5"
+      />
+    </ion-item>
+    @if (descriptionControl.invalid && (descriptionControl.touched || submitted)) {
+      <ion-note color="danger" class="ion-padding-start">
+        @if (descriptionControl.errors?.['required']) {
+          Description is required
+        }
+        @if (descriptionControl.errors?.['minlength']) {
+          Description must be at least 10 characters
+        }
+      </ion-note>
+    }
+    <ion-item>
+      <ion-label position="stacked" for="priority">Priority</ion-label>
+      <ion-select id="priority" formControlName="priority" placeholder="Select priority">
+        @for (option of priorityOptions; track option) {
+          <ion-select-option [value]="option">{{ option }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" for="dueDate">Due Date (Optional)</ion-label>
+      <ion-input
+        id="dueDate"
+        type="datetime-local"
+        formControlName="dueDate"
+      />
+    </ion-item>
+    <ion-button type="submit" expand="block" [disabled]="submitted && taskForm.invalid">
+      Create Task
+    </ion-button>
+    <ion-button type="button" expand="block" fill="outline" (click)="onReset()">
+      Reset
+    </ion-button>
+    <ion-button type="button" expand="block" fill="clear" (click)="onCancel()">
+      Cancel
+    </ion-button>
+  </form>
+</ion-content>

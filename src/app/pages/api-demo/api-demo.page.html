@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>API Demo</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <p>HTTP calls to JSONPlaceholder (GET, POST, PUT, DELETE). Response shown as JSON below.</p>
+  @if (state$ | async; as state) {
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label position="stacked" for="resourceId"
+          >Resource ID (for GET one, PUT, DELETE)</ion-label
+        >
+        <ion-input
+          id="resourceId"
+          type="text"
+          [(ngModel)]="resourceId"
+          placeholder="1"
+        />
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" for="postTitle">Title (POST/PUT)</ion-label>
+        <ion-input
+          id="postTitle"
+          type="text"
+          [(ngModel)]="postTitle"
+          placeholder="Demo title"
+        />
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" for="postBody">Body (POST/PUT)</ion-label>
+        <ion-input
+          id="postBody"
+          type="text"
+          [(ngModel)]="postBody"
+          placeholder="Demo body"
+        />
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" for="postUserId"
+          >User ID (POST/PUT)</ion-label
+        >
+        <ion-input
+          id="postUserId"
+          type="text"
+          [(ngModel)]="postUserId"
+          placeholder="1"
+        />
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="getList()" [disabled]="state.loading">
+      GET list
+    </ion-button>
+    <ion-button expand="block" (click)="getOne()" [disabled]="state.loading">
+      GET one
+    </ion-button>
+    <ion-button expand="block" color="success" (click)="post()" [disabled]="state.loading">
+      POST
+    </ion-button>
+    <ion-button expand="block" color="warning" (click)="put()" [disabled]="state.loading">
+      PUT
+    </ion-button>
+    <ion-button expand="block" color="danger" (click)="delete()" [disabled]="state.loading">
+      DELETE
+    </ion-button>
+    @if (state.loading) {
+      <ion-note color="primary" class="ion-padding">Loading…</ion-note>
+    }
+    @if (state.error) {
+      <ion-note color="danger" class="ion-padding">Error: {{ state.error }}</ion-note>
+    }
+    @if (state.lastMethod && !state.loading) {
+      <ion-note color="success" class="ion-padding"
+        >Last request: {{ state.lastMethod }}</ion-note
+      >
+    }
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Response (JSON)</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <pre class="response-json">{{ state.responseJson }}</pre>
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

@@ -1,0 +1,19 @@
+export const ROUTE_PATH_LOGIN = 'login';
+export const ROUTE_PATH_DASHBOARD = 'dashboard';
+export const ROUTE_PATH_HOME = '';
+export const ROUTE_PATH_TASKS = 'tasks';
+export const ROUTE_PATH_TASKS_NEW = 'tasks/new';
+export const ROUTE_PATH_ABOUT = 'about';
+export const ROUTE_PATH_API_DEMO = 'api-demo';
+export const ROUTE_PATH_CAMERA = 'camera';
+export const ROUTE_PATH_FILES = 'files';
+
+export const ROUTE_URL_LOGIN = `/${ROUTE_PATH_LOGIN}`;
+export const ROUTE_URL_DASHBOARD = `/${ROUTE_PATH_DASHBOARD}`;
+export const ROUTE_URL_HOME = '/';
+export const ROUTE_URL_TASKS = `/${ROUTE_PATH_TASKS}`;
+export const ROUTE_URL_API_DEMO = `/${ROUTE_PATH_API_DEMO}`;
+export const ROUTE_URL_ABOUT = `/${ROUTE_PATH_ABOUT}`;
+export const ROUTE_URL_CAMERA = `/${ROUTE_PATH_CAMERA}`;
+export const ROUTE_URL_FILES = `/${ROUTE_PATH_FILES}`;
+export const QUERY_PARAM_RETURN_URL = 'returnUrl';
